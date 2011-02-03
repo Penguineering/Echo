@@ -1,0 +1,9 @@
+de.ovgu.dke.cet.xmpp.server = Your Server Here
+
+de.ovgu.dke.cet.xmpp.user = Your Username Here
+de.ovgu.dke.cet.xmpp.pass = Your Password Here
+de.ovgu.dke.cet.xmpp.resource = Your Resource Name Here
+
+de.ovgu.dke.cet.xmpp.compression = true
+
+de.ovgu.dke.cet.xmpp.daemon = de.ovgu.dke.xmpp.echo.EchoDaemon
