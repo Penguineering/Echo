@@ -1,5 +1,6 @@
 package de.ovgu.dke.xmpp.echo;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.Properties;
 
@@ -10,30 +11,30 @@ import de.ovgu.dke.glue.api.transport.PacketThread;
 import de.ovgu.dke.glue.api.transport.Transport;
 import de.ovgu.dke.glue.api.transport.TransportException;
 import de.ovgu.dke.glue.api.transport.TransportRegistry;
+import de.ovgu.dke.glue.util.serialization.SingleSerializerProvider;
 import de.ovgu.dke.glue.util.transport.ClosedPacketHandler;
 import de.ovgu.dke.mocca.MoccaException;
 import de.ovgu.dke.mocca.command.Command;
-import de.ovgu.dke.mocca.command.CommandSerializationProvider;
 import de.ovgu.dke.mocca.command.DefaultCommandFactory;
+import de.ovgu.dke.mocca.command.TextCommandSerializer;
 
 public class EchoSender {
 	public static void main(String[] args) throws TransportException,
-			MoccaException {
+			MoccaException, IOException {
 		// initialize and register transport factory
 		TransportRegistry.getInstance().loadTransportFactory(
 				"de.ovgu.dke.glue.xmpp.transport.XMPPTransportFactory",
 				new ClosedPacketHandlerFactory(),
-				new CommandSerializationProvider(),
+				new SingleSerializerProvider(new TextCommandSerializer()),
 				TransportRegistry.AS_DEFAULT, TransportRegistry.DEFAULT_KEY);
-
-		TransportRegistry.getDefaultTransportFactory()
-				.setSerializationProvider(new CommandSerializationProvider());
 
 		// create a command
 		final Properties props = new Properties();
 		props.put("text", "Hallo Welt!");
-		final Command cmd = new DefaultCommandFactory().createCommand(
-				URI.create("http://dke.ovgu.de/mocca/test/command/echo"), props);
+		final Command cmd = new DefaultCommandFactory()
+				.createCommand(URI
+						.create("http://dke.ovgu.de/mocca/test/command/echo"),
+						props);
 
 		// get a transport
 		final Transport xmpp = TransportRegistry.getDefaultTransportFactory()
@@ -44,8 +45,10 @@ public class EchoSender {
 		final PacketThread thread = xmpp
 				.createThread(PacketThread.DEFAULT_HANDLER);
 
-		// send something
+		// send the command
 		thread.send(cmd, Packet.Priority.DEFAULT);
+
+		System.in.read();
 
 		// finish thread
 		thread.dispose();
