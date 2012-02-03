@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Properties;
 
+import de.ovgu.dke.glue.api.serialization.SerializationProvider;
 import de.ovgu.dke.glue.api.transport.Packet;
 import de.ovgu.dke.glue.api.transport.PacketHandler;
 import de.ovgu.dke.glue.api.transport.PacketHandlerFactory;
@@ -11,21 +12,21 @@ import de.ovgu.dke.glue.api.transport.PacketThread;
 import de.ovgu.dke.glue.api.transport.Transport;
 import de.ovgu.dke.glue.api.transport.TransportException;
 import de.ovgu.dke.glue.api.transport.TransportRegistry;
-import de.ovgu.dke.glue.util.serialization.SingleSerializerProvider;
 import de.ovgu.dke.glue.util.transport.ClosedPacketHandler;
 import de.ovgu.dke.mocca.MoccaException;
 import de.ovgu.dke.mocca.command.Command;
+import de.ovgu.dke.mocca.command.CommandSerializationProvider;
 import de.ovgu.dke.mocca.command.DefaultCommandFactory;
-import de.ovgu.dke.mocca.command.TextCommandSerializer;
 
 public class EchoSender {
 	public static void main(String[] args) throws TransportException,
 			MoccaException, IOException {
 		// initialize and register transport factory
+		final SerializationProvider serializers = CommandSerializationProvider
+				.getInstance();
 		TransportRegistry.getInstance().loadTransportFactory(
 				"de.ovgu.dke.glue.xmpp.transport.XMPPTransportFactory",
-				new ClosedPacketHandlerFactory(),
-				new SingleSerializerProvider(new TextCommandSerializer()),
+				new ClosedPacketHandlerFactory(), serializers,
 				TransportRegistry.AS_DEFAULT, TransportRegistry.DEFAULT_KEY);
 
 		// create a command
@@ -40,6 +41,7 @@ public class EchoSender {
 		final Transport xmpp = TransportRegistry.getDefaultTransportFactory()
 				.createTransport(
 						URI.create("xmpp:shaun@bison.cs.uni-magdeburg.de"));
+		xmpp.checkCapabilities();
 
 		// create a packet thread
 		final PacketThread thread = xmpp
