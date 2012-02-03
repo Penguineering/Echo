@@ -19,6 +19,26 @@
 			</plugin>
 		</plugins>
 	</build>
+	
+	  <repositories>
+		<repository>
+			<releases>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+				<checksumPolicy>warn</checksumPolicy>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>never</updatePolicy>
+				<checksumPolicy>fail</checksumPolicy>
+			</snapshots>
+
+			<id>nexus</id>
+			<name>dke-group public nexus repository</name>
+			<url>http://svndke.cs.uni-magdeburg.de:8081/nexus/content/groups/public/</url>
+			<layout>default</layout>
+		</repository>
+	</repositories>
 
 	<dependencies>
 		<dependency>
@@ -34,7 +54,6 @@
 			<artifactId>mocca-core</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<scope>compile</scope>
-			<optional>true</optional>
 		</dependency>
 
 		<dependency>

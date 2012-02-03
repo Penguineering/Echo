@@ -5,18 +5,12 @@ import java.net.URI;
 import java.util.Properties;
 
 import de.ovgu.dke.glue.api.serialization.SerializationProvider;
-import de.ovgu.dke.glue.api.transport.Packet;
-import de.ovgu.dke.glue.api.transport.PacketHandler;
-import de.ovgu.dke.glue.api.transport.PacketHandlerFactory;
-import de.ovgu.dke.glue.api.transport.PacketThread;
-import de.ovgu.dke.glue.api.transport.Transport;
-import de.ovgu.dke.glue.api.transport.TransportException;
-import de.ovgu.dke.glue.api.transport.TransportRegistry;
+import de.ovgu.dke.glue.api.transport.*;
 import de.ovgu.dke.glue.util.transport.ClosedPacketHandler;
 import de.ovgu.dke.mocca.MoccaException;
 import de.ovgu.dke.mocca.command.Command;
-import de.ovgu.dke.mocca.command.CommandSerializationProvider;
 import de.ovgu.dke.mocca.command.DefaultCommandFactory;
+import de.ovgu.dke.mocca.glue.CommandSerializationProvider;
 
 public class EchoSender {
 	public static void main(String[] args) throws TransportException,
