@@ -23,7 +23,7 @@ public class EchoSender {
 		final SerializationProvider serializers = CommandSerializationProvider
 				.getInstance();
 		TransportRegistry.getInstance().loadTransportFactory(
-				"de.ovgu.dke.glue.xmpp.transport.XMPPTransportFactory",
+				"de.ovgu.dke.glue.xmpp.transport.XMPPTransportFactory", null,
 				new CommandPacketHandlerFactory(new EchoCommandHandler()),
 				serializers, TransportRegistry.AS_DEFAULT,
 				TransportRegistry.DEFAULT_KEY);
