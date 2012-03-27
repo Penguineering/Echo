@@ -4,61 +4,53 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Properties;
 
-import de.ovgu.dke.glue.api.serialization.SerializationProvider;
-import de.ovgu.dke.glue.api.transport.TransportException;
-import de.ovgu.dke.glue.api.transport.TransportRegistry;
 import de.ovgu.dke.mocca.MoccaException;
+import de.ovgu.dke.mocca.MoccaHelper;
+import de.ovgu.dke.mocca.MoccaRuntime;
 import de.ovgu.dke.mocca.command.Command;
 import de.ovgu.dke.mocca.command.DefaultCommandFactory;
 import de.ovgu.dke.mocca.context.Context;
-import de.ovgu.dke.mocca.context.ContextImpl;
 import de.ovgu.dke.mocca.control.CommandHandler;
-import de.ovgu.dke.mocca.glue.CommandPacketHandlerFactory;
-import de.ovgu.dke.mocca.glue.CommandSerializationProvider;
 
 public class EchoSender {
-	public static void main(String[] args) throws TransportException,
-			MoccaException, IOException {
-		// initialize and register transport factory
-		final SerializationProvider serializers = CommandSerializationProvider
-				.getInstance();
-		TransportRegistry.getInstance().loadTransportFactory(
-				"de.ovgu.dke.glue.xmpp.transport.XMPPTransportFactory", null,
-				new CommandPacketHandlerFactory(new EchoCommandHandler()),
-				serializers, TransportRegistry.AS_DEFAULT,
-				TransportRegistry.DEFAULT_KEY);
+    public static final URI echoCmd = URI
+            .create("http://dke.ovgu.de/mocca/test/command/echo");
 
-		// create a context
-		final Context ctx = new ContextImpl(
-				TransportRegistry.getDefaultTransportFactory());
-		ctx.connect(URI.create("xmpp:shaun@bison.cs.uni-magdeburg.de"));
+    public static void main(String[] args) throws MoccaException, IOException {
 
-		// create a command
-		final Properties props = new Properties();
-		props.put("text", "Hallo Welt!");
-		final Command cmd = new DefaultCommandFactory()
-				.createCommand(URI
-						.create("http://dke.ovgu.de/mocca/test/command/echo"),
-						props);
+        final MoccaRuntime mocca = MoccaHelper.getDefaultRuntime();
+        mocca.init();
+        mocca.getCommandHandlerRegistry().registerCommandHandler(echoCmd,
+                new EchoCommandHandler());
 
-		// send the command
-		ctx.sendCommand(cmd);
+        // create a context
+        final Context ctx = mocca.createContext();
+        ctx.connect(URI.create("xmpp:shaun@bison.cs.uni-magdeburg.de"));
 
-		System.in.read();
+        // create a command
+        final Properties props = new Properties();
+        props.put("text", "Hallo Welt!");
+        final Command cmd = new DefaultCommandFactory().createCommand(echoCmd,
+                props);
 
-		// disconnect the context
-		ctx.disconnect();
+        // send the command
+        ctx.sendCommand(cmd);
 
-		// dispose the transport factory
-		TransportRegistry.getInstance().disposeAll();
+        System.in.read();
 
-	}
+        // disconnect the context
+        ctx.disconnect();
+
+        mocca.dispose();
+    }
 }
 
 class EchoCommandHandler implements CommandHandler {
 
-	@Override
-	public void handleCommand(Command cmd, Context ctx) throws MoccaException {
-		System.out.println("Received command: " + cmd.getCommand());
-	}
+    @Override
+    public void handleCommand(Command cmd, Context ctx) throws MoccaException {
+        final String ctx_id = (String) ctx.getAttribute(Context.ATTR_ID);
+        System.out.println("Received command on context " + ctx_id + ": "
+                + cmd.getCommand());
+    }
 }
