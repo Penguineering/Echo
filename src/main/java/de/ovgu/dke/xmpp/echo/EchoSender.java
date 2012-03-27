@@ -9,7 +9,6 @@ import de.ovgu.dke.mocca.api.MoccaRuntime;
 import de.ovgu.dke.mocca.api.command.Command;
 import de.ovgu.dke.mocca.api.command.CommandHandler;
 import de.ovgu.dke.mocca.api.context.Context;
-import de.ovgu.dke.mocca.impl.DefaultCommandFactory;
 import de.ovgu.dke.mocca.util.MoccaHelper;
 
 public class EchoSender {
@@ -19,7 +18,9 @@ public class EchoSender {
     public static void main(String[] args) throws MoccaException, IOException {
 
         final MoccaRuntime mocca = MoccaHelper.getDefaultRuntime();
+
         mocca.init();
+        
         mocca.getCommandHandlerRegistry().registerCommandHandler(echoCmd,
                 new EchoCommandHandler());
 
@@ -30,8 +31,7 @@ public class EchoSender {
         // create a command
         final Properties props = new Properties();
         props.put("text", "Hallo Welt!");
-        final Command cmd = new DefaultCommandFactory().createCommand(echoCmd,
-                props);
+        final Command cmd = mocca.createCommand(echoCmd, props);
 
         // send the command
         ctx.sendCommand(cmd);
