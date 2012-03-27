@@ -4,13 +4,13 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Properties;
 
-import de.ovgu.dke.mocca.MoccaException;
-import de.ovgu.dke.mocca.MoccaHelper;
-import de.ovgu.dke.mocca.MoccaRuntime;
-import de.ovgu.dke.mocca.command.Command;
-import de.ovgu.dke.mocca.command.DefaultCommandFactory;
-import de.ovgu.dke.mocca.context.Context;
-import de.ovgu.dke.mocca.control.CommandHandler;
+import de.ovgu.dke.mocca.api.MoccaException;
+import de.ovgu.dke.mocca.api.MoccaRuntime;
+import de.ovgu.dke.mocca.api.command.Command;
+import de.ovgu.dke.mocca.api.command.CommandHandler;
+import de.ovgu.dke.mocca.api.context.Context;
+import de.ovgu.dke.mocca.impl.DefaultCommandFactory;
+import de.ovgu.dke.mocca.util.MoccaHelper;
 
 public class EchoSender {
     public static final URI echoCmd = URI
