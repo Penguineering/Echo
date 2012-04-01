@@ -2,6 +2,8 @@ package de.ovgu.dke.xmpp.echo;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Properties;
 
 import de.ovgu.dke.mocca.api.MoccaException;
@@ -21,7 +23,7 @@ public class EchoSender {
 
         mocca.init();
 
-        mocca.getCommandHandlerRegistry().registerCommandHandler(echoCmd,
+        mocca.getCommandHandlerRegistry().registerCommandHandler(
                 new EchoCommandHandler());
 
         // create a context
@@ -31,7 +33,8 @@ public class EchoSender {
         // create a command
         final Properties props = new Properties();
         props.put("text", "Hallo Welt!");
-        final Command cmd = mocca.createCommand(echoCmd, props);
+        final Command cmd = mocca.createCommand(EchoCommandHandler.CMD_ECHO,
+                props);
 
         // send the command
         ctx.sendCommand(cmd);
@@ -46,6 +49,14 @@ public class EchoSender {
 }
 
 class EchoCommandHandler implements CommandHandler {
+    public static final URI CMD_ECHO = URI
+            .create("http://dke.ovgu.de/mocca/test/command/echo");
+
+    @Override
+    public Collection<URI> getAvailableCommands() throws MoccaException {
+        return Collections.singletonList(CMD_ECHO);
+    }
+
     @Override
     public void handleCommand(Command cmd, Context ctx) throws MoccaException {
         final String ctx_id = (String) ctx.getAttribute(Context.ATTR_ID);
@@ -56,12 +67,11 @@ class EchoCommandHandler implements CommandHandler {
         System.out.println("Text is: " + text);
 
         Integer iteration = (Integer) ctx.getAttribute("iteration");
-        if (iteration == null) 
+        if (iteration == null)
             iteration = new Integer(0);
         ++iteration;
-        
+
         ctx.putAttribute("iteration", iteration);
-        
 
         final Properties props = new Properties();
         props.put("text", text);
