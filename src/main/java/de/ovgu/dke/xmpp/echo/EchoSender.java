@@ -21,7 +21,7 @@ public class EchoSender {
 
 		final MoccaRuntime mocca = MoccaHelper.getDefaultRuntime();
 
-		mocca.init();
+		mocca.init(MoccaRuntime.NULL_ENV);
 
 		mocca.getCommandHandlerRegistry().registerCommandHandler(
 				new EchoCommandHandler());
