@@ -52,21 +52,21 @@
 		<dependency>
 			<groupId>de.ovgu.dke.mocca</groupId>
 			<artifactId>mocca-core</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.1.0</version>
 			<scope>compile</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>de.ovgu.dke.mocca</groupId>
 			<artifactId>mocca-daemon</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.1.0</version>
 			<scope>compile</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>de.ovgu.dke.glue</groupId>
 			<artifactId>glue-xmpp</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.1.0</version>
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>

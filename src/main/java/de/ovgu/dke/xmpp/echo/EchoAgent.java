@@ -16,8 +16,7 @@ public class EchoAgent implements MoccaAgent {
 	}
 
 	@Override
-	public Collection<CommandHandler> getCommandHandlers()
-			throws MoccaException {
+	public Collection<CommandHandler> getCommandHandlers() {
 		return Collections
 				.singletonList((CommandHandler) new EchoCommandHandler());
 	}

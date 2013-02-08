@@ -53,7 +53,7 @@ class EchoCommandHandler implements CommandHandler {
 			.create("http://dke.ovgu.de/mocca/test/command/echo");
 
 	@Override
-	public Collection<URI> getAvailableCommands() throws MoccaException {
+	public Collection<URI> getAvailableCommands() {
 		return Collections.singletonList(CMD_ECHO);
 	}
 
