@@ -18,7 +18,16 @@ public class EchoSender {
 
 		final MoccaRuntime mocca = MoccaHelper.getDefaultRuntime();
 
-		mocca.init(MoccaRuntime.NULL_ENV);
+		Properties env = new Properties();
+		env.setProperty("de.ovgu.dke.glue.xmpp.server", "Your Server");
+		env.setProperty("de.ovgu.dke.glue.xmpp.user", "Your User");
+		env.setProperty("de.ovgu.dke.glue.xmpp.pass", "Your Password");
+		// and so on, all the values from the configuration file may go here.
+
+		// leave this out to actually use the above configuration
+		env = MoccaRuntime.NULL_ENV;
+
+		mocca.init(env);
 
 		mocca.getCommandHandlerRegistry().registerCommandHandler(
 				new EchoCommandHandler());
