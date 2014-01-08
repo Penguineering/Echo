@@ -39,7 +39,7 @@ public class EchoSender {
 		final Endpoint endpoint = ((GlueMoccaRuntimeImpl) mocca).getEndpoint();
 		endpoint.registerTransportFactory(TransportRegistry
 				.getDefaultTransportFactory());
-		TransportRegistry.getDefaultTransportFactory().addDefaultEndpoint(
+		TransportRegistry.getDefaultTransportFactory().addInboundEndpoint(
 				endpoint);
 
 		mocca.init(env);
