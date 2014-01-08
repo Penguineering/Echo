@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.ovgu.dke.xmpp</groupId>
 	<artifactId>Echo</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.3.0-shaun-SNAPSHOT</version>
 
 	<build>
 		<plugins>
