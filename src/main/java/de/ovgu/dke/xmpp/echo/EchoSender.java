@@ -31,13 +31,16 @@ public class EchoSender {
 		// leave this out to actually use the above configuration
 		env = MoccaRuntime.NULL_ENV;
 
-		final Endpoint endpoint = ((GlueMoccaRuntimeImpl) mocca).getEndpoint();
-
 		// initialize the transport
 		TransportRegistry.getInstance().loadTransportFactory(
 				"de.ovgu.dke.glue.xmpp.transport.XMPPTransportFactory", env,
-				endpoint, TransportRegistry.AS_DEFAULT,
-				TransportRegistry.DEFAULT_KEY);
+				TransportRegistry.AS_DEFAULT, TransportRegistry.DEFAULT_KEY);
+
+		final Endpoint endpoint = ((GlueMoccaRuntimeImpl) mocca).getEndpoint();
+		endpoint.registerTransportFactory(TransportRegistry
+				.getDefaultTransportFactory());
+		TransportRegistry.getDefaultTransportFactory().addDefaultEndpoint(
+				endpoint);
 
 		mocca.init(env);
 
