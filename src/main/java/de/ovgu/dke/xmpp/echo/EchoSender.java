@@ -6,7 +6,8 @@ import java.util.Properties;
 
 import de.ovgu.dke.glue.api.endpoint.Endpoint;
 import de.ovgu.dke.glue.api.transport.TransportException;
-import de.ovgu.dke.glue.api.transport.TransportRegistry;
+import de.ovgu.dke.glue.api.transport.TransportFactory;
+import de.ovgu.dke.glue.util.transport.TransportUtils;
 import de.ovgu.dke.mocca.api.MoccaException;
 import de.ovgu.dke.mocca.api.MoccaRuntime;
 import de.ovgu.dke.mocca.api.command.Command;
@@ -31,16 +32,13 @@ public class EchoSender {
 		// leave this out to actually use the above configuration
 		env = MoccaRuntime.NULL_ENV;
 
-		// initialize the transport
-		TransportRegistry.getInstance().loadTransportFactory(
-				"de.ovgu.dke.glue.xmpp.transport.XMPPTransportFactory", env,
-				TransportRegistry.AS_DEFAULT, TransportRegistry.DEFAULT_KEY);
-
 		final Endpoint endpoint = ((GlueMoccaRuntimeImpl) mocca).getEndpoint();
-		endpoint.registerTransportFactory(TransportRegistry
-				.getDefaultTransportFactory());
-		TransportRegistry.getDefaultTransportFactory().addInboundEndpoint(
-				endpoint);
+
+		// initialize the transport
+		final TransportFactory xmppTF = TransportUtils.loadTransportFactory(
+				"de.ovgu.dke.glue.xmpp.transport.XMPPTransportFactory", env);
+		xmppTF.addInboundEndpoint(endpoint);
+		endpoint.registerTransportFactory(xmppTF);
 
 		mocca.init(env);
 
